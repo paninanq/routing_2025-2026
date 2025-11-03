@@ -1,0 +1,55 @@
+name: lab2
+mgmt:
+  network: lab-2
+  ipv4-subnet: 172.10.0.0/24
+
+topology:
+  kinds:
+    vr-ros:
+      image: vrnetlab/mikrotik_routeros:6.47.9
+
+  nodes:
+    R01.BRL:
+      kind: vr-ros
+      mgmt-ipv4: 172.10.0.103
+      startup-config: configs/R01.BRL.rsc
+    R01.FRT:
+      kind: vr-ros
+      mgmt-ipv4: 172.10.0.102
+      startup-config: configs/R01.FRT.rsc
+    R01.MSK:
+      kind: vr-ros
+      mgmt-ipv4: 172.10.0.101
+      startup-config: configs/R01.MSK.rsc
+    PC1:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 172.10.0.2
+      binds:
+        - ./configs:/configs
+      exec:
+        - sh /configs/PC.sh
+    PC2:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 172.10.0.3
+      binds:
+        - ./configs:/configs
+      exec:
+        - sh /configs/PC.sh
+    PC3:
+      kind: linux
+      image: alpine:latest
+      mgmt-ipv4: 172.10.0.4
+      binds:
+        - ./configs:/configs
+      exec:
+        - sh /configs/PC.sh
+
+  links:
+    - endpoints: ["R01.BRL:eth1","R01.MSK:eth2"]
+    - endpoints: ["R01.BRL:eth2","R01.FRT:eth1"]
+    - endpoints: ["R01.MSK:eth1","R01.FRT:eth2"]
+    - endpoints: ["R01.MSK:eth3","PC1:eth1"]
+    - endpoints: ["R01.FRT:eth3","PC2:eth1"]
+    - endpoints: ["R01.BRL:eth3","PC3:eth1"]
