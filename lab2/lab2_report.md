@@ -67,7 +67,7 @@ topology:
 
 Ниже представлена схема сети в draw.io:
 
-![Схема сети в draw.io](images/driwio.png)
+![Схема сети в draw.io](images/drawio.png)
 
 
 
